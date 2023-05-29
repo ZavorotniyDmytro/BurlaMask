@@ -5,7 +5,7 @@ import { AppService } from './app.service';
 import { ConfigModule } from './config/config.module';
 
 @Module({
-  imports: [ConfigModule, ProvidersModule],
+  imports: [ConfigModule],
   controllers: [AppController],
   providers: [AppService],
 })

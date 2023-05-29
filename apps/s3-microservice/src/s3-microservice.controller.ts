@@ -3,10 +3,6 @@ import { S3MicroserviceService } from './s3-microservice.service';
 
 @Controller()
 export class S3MicroserviceController {
-  constructor(private readonly s3MicroserviceService: S3MicroserviceService) {}
+  	constructor(private readonly s3MicroserviceService: S3MicroserviceService) {}
 
-  @Get()
-  getHello(): string {
-    return this.s3MicroserviceService.getHello();
-  }
 }

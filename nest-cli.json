@@ -1,0 +1,32 @@
+{
+  "$schema": "https://json.schemastore.org/nest-cli",
+  "collection": "@nestjs/schematics",
+  "sourceRoot": "apps/BurlaMask/src",
+  "compilerOptions": {
+    "deleteOutDir": true,
+    "webpack": true,
+    "tsConfigPath": "apps/BurlaMask/tsconfig.app.json"
+  },
+  "monorepo": true,
+  "root": "apps/BurlaMask",
+  "projects": {
+    "BurlaMask": {
+      "type": "application",
+      "root": "apps/BurlaMask",
+      "entryFile": "main",
+      "sourceRoot": "apps/BurlaMask/src",
+      "compilerOptions": {
+        "tsConfigPath": "apps/BurlaMask/tsconfig.app.json"
+      }
+    },
+    "s3-microservice": {
+      "type": "application",
+      "root": "apps/s3-microservice",
+      "entryFile": "main",
+      "sourceRoot": "apps/s3-microservice/src",
+      "compilerOptions": {
+        "tsConfigPath": "apps/s3-microservice/tsconfig.app.json"
+      }
+    }
+  }
+}

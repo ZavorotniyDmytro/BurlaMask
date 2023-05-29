@@ -5,4 +5,5 @@ import { S3MicroserviceService } from './s3-microservice.service';
 export class S3MicroserviceController {
   	constructor(private readonly s3MicroserviceService: S3MicroserviceService) {}
 
+	
 }

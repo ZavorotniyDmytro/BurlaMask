@@ -1,9 +1,9 @@
 import { Column, CreateDateColumn, Entity, PrimaryGeneratedColumn } from 'typeorm';
 
 @Entity()
-export class SelectedCity {
+export class Image {
 	@PrimaryGeneratedColumn('uuid')
-	id: number
+	id: string
 
 	@Column({ type: 'varchar', length: 255 })
 	image_url: string

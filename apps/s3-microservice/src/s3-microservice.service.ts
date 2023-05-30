@@ -17,11 +17,12 @@ export class S3MicroserviceService {
 		});
 	}
 
-	async uploadFileToS3(file: Express.Multer.File): Promise<string> {
+	async uploadFileToS3(file): Promise<string> {
+		file.buffer = Buffer.from(file.buffer.data)			
 		const result = await this.s3
 		  .upload({
 			 Bucket: this.configService.get<string>('BUCKET_NAME'),
-			 Key: file.originalname,
+			 Key: file.filename,
 			 Body: file.buffer,
 			 ACL: 'public-read',
 		  })

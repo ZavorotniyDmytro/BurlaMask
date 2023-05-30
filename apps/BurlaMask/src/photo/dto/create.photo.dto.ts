@@ -1,3 +1,0 @@
-interface CreatePhotoDto {
-	description: string;
-}

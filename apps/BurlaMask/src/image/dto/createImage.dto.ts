@@ -1,0 +1,3 @@
+interface ICreateImageDto {
+	description: string;
+}

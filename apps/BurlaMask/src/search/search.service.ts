@@ -2,7 +2,6 @@ import { Image } from '@lib/providers/image.entity';
 import { Injectable } from '@nestjs/common';
 import { ElasticsearchService } from '@nestjs/elasticsearch';
 import { IDescriptionSearchBody } from './types/descriptionSearchBody.interface';
-import { IDescriptionSearchResponse } from './types/descriptionSearchResponse.interface';
 
 @Injectable()
 export class SearchService {

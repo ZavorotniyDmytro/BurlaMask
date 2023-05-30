@@ -20,20 +20,30 @@ export class SearchService {
 		})
 	}
 
-	async searchByPartDescription(partDescription: string): Promise<IDescriptionSearchBody[]>{
+	async searchByPartDescription(partDescription: string): Promise<IDescriptionSearchBody[]> {
 		const body = await this.elasticsearchService.search<IDescriptionSearchBody>({
-			index: this.index,
-			body: {
-				query: {
-					match: {
-						description: partDescription,
-					},
+		  index: this.index,
+		  body: {
+			 query: {
+				match: {
+				  description: {
+						query: partDescription,
+
+						// fuzziness: {
+						// 	fuzziness: 2,
+						// 	prefix_length: 2,
+						// 	max_expansions: 50,
+						// }
+						fuzziness: 'auto', 
+				  },
 				},
-			},
-		})
+			 },
+		  },
+		});
+	 
 		const hits = body.hits.hits;
 		const results = hits.map((hit) => hit._source);
-
+	 
 		return results;
-	}
+	 }
 }

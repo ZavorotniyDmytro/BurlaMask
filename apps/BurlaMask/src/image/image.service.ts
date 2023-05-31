@@ -74,7 +74,7 @@ export class ImageService {
 		fileName: string,
 	): string {
 		
-		if (this.isImageFile(file)) {
+		if (!this.isImageFile(file)) {
 			throw new HttpException(
 			'Wrong file extension. Must be: jpg, jpeg, png',
 			HttpStatus.BAD_REQUEST,

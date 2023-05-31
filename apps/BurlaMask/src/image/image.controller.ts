@@ -8,7 +8,7 @@ import {ImageService} from './image.service';
 export class ImageController {
 	constructor(private readonly imageService: ImageService){}
 	
-	@Get('/description')
+	@Post('/description')
 	findByPartDescription(@Body() data: IDescription): Promise<IDescriptionSearchBody[]>{
 		return this.imageService.findByPartDescription(data)
 	}

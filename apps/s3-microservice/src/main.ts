@@ -22,7 +22,7 @@ async function bootstrap() {
 			noAck: false,
       	prefetchCount: 1,
 		},
-		
+
 	});
 
 	app.startAllMicroservices();

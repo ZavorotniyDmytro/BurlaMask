@@ -7,7 +7,7 @@ import {ImageService} from './image.service';
 @Controller('images')
 export class ImageController {
 	constructor(private readonly imageService: ImageService){}
-	
+
 	@Post('/description')
 	findByPartDescription(@Body() data: IDescription): Promise<IDescriptionSearchBody[]>{
 		return this.imageService.findByPartDescription(data)
@@ -15,7 +15,7 @@ export class ImageController {
 
 	@Post('/upload')
 	@UseInterceptors(FileInterceptor('file'))
-	create(@UploadedFile() file: Express.Multer.File, @Body() createImageDto: ICreateImageDto): Promise<string>{		
+	create(@UploadedFile() file: Express.Multer.File, @Body() createImageDto: ICreateImageDto): Promise<string>{
 		return this.imageService.create(createImageDto, file)
 	}
 

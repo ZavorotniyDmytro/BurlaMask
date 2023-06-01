@@ -1,5 +1,5 @@
 import { Image } from '@lib/providers/image.entity';
-import { HttpException, HttpStatus, Inject, Injectable } from '@nestjs/common';
+import { HttpException, HttpStatus, Inject, Injectable, UploadedFile } from '@nestjs/common';
 import { ClientProxy } from '@nestjs/microservices';
 import { InjectRepository } from '@nestjs/typeorm';
 import { extname } from 'path';
@@ -8,11 +8,15 @@ import { Repository } from 'typeorm';
 import { SearchService } from '../search/search.service';
 import { IDescriptionSearchBody } from '../search/types/descriptionSearchBody.interface';
 import { IDescription } from './dto/description.dto';
+import axios from 'axios';
+import FormData from 'form-data';
+
 
 export interface ISwappedFaces{
 	image1: Express.Multer.File;
 	image2: Express.Multer.File;
 }
+
 
 @Injectable()
 export class ImageService {
@@ -53,27 +57,31 @@ export class ImageService {
 		return image.image_url;
 	}
 
-	async swapFaces(image1: Express.Multer.File, image2: Express.Multer.File): Promise<ISwappedFaces>{
-		if (this.isImageFile(image1) && this.isImageFile(image2)){
+	async swapFaces(image1: Express.Multer.File, image2: Express.Multer.File): Promise<ISwappedFaces> {
+		if (this.isImageFile(image1) && this.isImageFile(image2)) {
+		  try {
+			const formData = new FormData();
+			formData.append('image1', new Blob([image1.buffer]), image1.originalname); // Використовуємо Blob
+			formData.append('image2', new Blob([image2.buffer]), image2.originalname); // Використовуємо Blob
 
+			const flaskResponse = await axios.post('http://localhost:5000/process_images', formData, {
+			  headers: formData.getHeaders(),
+			});
 
-			// обробка
-
-			const images: ISwappedFaces = {image1, image2}
-			return images
-		} else {
-			throw new HttpException(
-				'Wrong file extension. Must be: jpg, jpeg, png',
-				HttpStatus.BAD_REQUEST,
-			);
+			// Повернення відповіді клієнту
+			return flaskResponse.data;
+		  } catch (error) {
+			// Обробка помилки
+			console.error(error);
+		  }
 		}
-	}
+	  }
 
 	private processImageFile(
 		file: Express.Multer.File,
 		fileName: string,
 	): string {
-		
+
 		if (!this.isImageFile(file)) {
 			throw new HttpException(
 			'Wrong file extension. Must be: jpg, jpeg, png',

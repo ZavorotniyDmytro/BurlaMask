@@ -13,8 +13,7 @@ import * as FormData from 'form-data';
 
 
 export interface ISwappedFaces{
-	image1: Express.Multer.File;
-	image2: Express.Multer.File;
+	images: Express.Multer.File[];
 }
 
 

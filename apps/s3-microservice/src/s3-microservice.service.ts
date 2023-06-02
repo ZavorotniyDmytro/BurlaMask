@@ -2,6 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import * as AWS from 'aws-sdk';
 
+
 @Injectable()
 export class S3MicroserviceService {
 	private readonly s3: AWS.S3;
@@ -18,7 +19,7 @@ export class S3MicroserviceService {
 	}
 
 	async uploadFileToS3(file): Promise<string> {
-		file.buffer = Buffer.from(file.buffer.data)			
+		file.buffer = Buffer.from(file.buffer.data)
 		const result = await this.s3
 		  .upload({
 			 Bucket: this.configService.get<string>('BUCKET_NAME'),

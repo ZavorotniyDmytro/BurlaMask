@@ -76,9 +76,8 @@ def crop_ellipse(image, ellipse):
 
 
 # Отримання посилань на зображення
-image1_url = "https://img.redbull.com/images/c_crop,w_1172,h_585,x_0,y_86,f_auto,q_auto/c_scale,w_1200/redbullcom/2016/05/20/1331795954995_2/%D1%80%D0%B0%D0%B9%D0%B0%D0%BD-%D0%B3%D0%BE%D1%81%D0%BB%D0%B8%D0%BD%D0%B3.jpg"
-image2_url = "https://media.glamour.ru/photos/61695c27fb4c6d23cde0a33e/16:9/w_2560%2Cc_limit/w960.jpg"
-
+image1_url = "https://insider.ua/wp-content/uploads/2021/09/insider.uaariana-grande-za%E2%80%A6liniyu-kosmetiki-e1631519532575.jpg"
+image2_url = "https://img.championat.com/c/900x900/news/big/a/o/krishtianu-ronaldu-pervyj-chelovek-u-kotorogo-250-mln-podpischikov-v-instagrame_16096164541612907584.jpg"
 # Знаходження облич і центрів
 face1, center1 = find_face(image1_url)
 face2, center2 = find_face(image2_url)

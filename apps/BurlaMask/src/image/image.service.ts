@@ -9,7 +9,7 @@ import { SearchService } from '../search/search.service';
 import { IDescriptionSearchBody } from '../search/types/descriptionSearchBody.interface';
 import { IDescription } from './dto/description.dto';
 import axios from 'axios';
-import FormData from 'form-data';
+import * as FormData from 'form-data';
 
 
 export interface ISwappedFaces{
@@ -61,8 +61,8 @@ export class ImageService {
 		if (this.isImageFile(image1) && this.isImageFile(image2)) {
 		  try {
 			const formData = new FormData();
-			formData.append('image1', new Blob([image1.buffer]), image1.originalname); // Використовуємо Blob
-			formData.append('image2', new Blob([image2.buffer]), image2.originalname); // Використовуємо Blob
+			formData.append('image1', image1.buffer, { filename: image1.originalname });
+			formData.append('image2', image2.buffer, { filename: image2.originalname });
 
 			const flaskResponse = await axios.post('http://localhost:5000/process_images', formData, {
 			  headers: formData.getHeaders(),
@@ -75,7 +75,7 @@ export class ImageService {
 			console.error(error);
 		  }
 		}
-	  }
+	}
 
 	private processImageFile(
 		file: Express.Multer.File,

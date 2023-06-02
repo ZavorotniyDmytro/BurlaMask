@@ -10,8 +10,7 @@ import { IDescriptionSearchBody } from '../search/types/descriptionSearchBody.in
 import { IDescription } from './dto/description.dto';
 
 export interface ISwappedFaces{
-	image1: Express.Multer.File;
-	image2: Express.Multer.File;
+	images: Express.Multer.File[];
 }
 
 @Injectable()
@@ -53,21 +52,55 @@ export class ImageService {
 		return image.image_url;
 	}
 
-	async swapFaces(image1: Express.Multer.File, image2: Express.Multer.File): Promise<ISwappedFaces>{
-		if (this.isImageFile(image1) && this.isImageFile(image2)){
+	async swapFaces(images: Express.Multer.File[]): Promise<Express.Multer.File[]> {
+		// await faceapi.nets.ssdMobilenetv1.loadFromDisk('models');
 
+		// if (images.length < 2) {
+		// 	throw new Error('Необходимо передать как минимум два изображения.');
+		// }
 
-			// обробка
+		// const [image1, image2] = images;
 
-			const images: ISwappedFaces = {image1, image2}
-			return images
-		} else {
-			throw new HttpException(
-				'Wrong file extension. Must be: jpg, jpeg, png',
-				HttpStatus.BAD_REQUEST,
-			);
-		}
-	}
+		// const img1 = await loadImageFromUrl(URL.createObjectURL(image1));
+  		// const img2 = await loadImageFromUrl(URL.createObjectURL(image2));
+
+		// const detections1 = await faceapi.detectSingleFace(img1).withFaceLandmarks().withFaceDescriptor();
+		// const detections2 = await faceapi.detectSingleFace(img2).withFaceLandmarks().withFaceDescriptor();
+
+		// if (!detections1 || !detections2) {
+		// 	throw new HttpException('Не удалось обнаружить лицо на одном из изображений.', HttpStatus.BAD_REQUEST);
+		// }
+
+		// const face1 = detections1.detection.box;
+		// const face2 = detections2.detection.box;
+
+		// const canvas1 = createCanvas(face1.width, face1.height);
+		// const canvas2 = createCanvas(face2.width, face2.height);
+		// const ctx1 = canvas1.getContext('2d');
+		// const ctx2 = canvas2.getContext('2d');
+
+		// ctx1.drawImage(img1, face1.x, face1.y, face1.width, face1.height, 0, 0, face1.width, face1.height);
+		// ctx2.drawImage(img2, face2.x, face2.y, face2.width, face2.height, 0, 0, face2.width, face2.height);
+
+		// // Создание новых экземпляров Express.Multer.File с обновленными данными изображений
+		// const swappedImage1: Express.Multer.File = {
+		// 	...image1,
+		// 	buffer: await canvas2.toBuffer('image/jpeg'),
+		// };
+
+		// const swappedImage2: Express.Multer.File = {
+		// 	...image2,
+		// 	buffer: await canvas1.toBuffer('image/jpeg'),
+		// };
+
+		// // Удаление временных файлов исходных изображений
+		// await fs.unlink(image1.path);
+		// await fs.unlink(image2.path);
+
+		// // Возвращение массива с обновленными изображениями
+		// return [swappedImage1, swappedImage2];
+		return [images[0], images[1]]
+	}	
 
 	private processImageFile(
 		file: Express.Multer.File,

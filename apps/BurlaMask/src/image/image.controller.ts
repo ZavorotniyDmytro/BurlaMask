@@ -1,4 +1,4 @@
-import { Body, Controller, Get, Post, UploadedFile, UploadedFiles, UseInterceptors } from '@nestjs/common';
+import { BadRequestException, Body, Controller, Post, UploadedFile, UploadedFiles, UseInterceptors } from '@nestjs/common';
 import { FileFieldsInterceptor, FileInterceptor } from '@nestjs/platform-express';
 import { IDescriptionSearchBody } from '../search/types/descriptionSearchBody.interface';
 import { IDescription } from './dto/description.dto';
@@ -21,13 +21,20 @@ export class ImageController {
 
 	@Post('/swap')
 	@UseInterceptors(
-		FileFieldsInterceptor([
-			{ name: 'images', maxCount: 2 },
-		 ])
+	FileFieldsInterceptor([
+		{ name: 'images', maxCount: 2 },
+	])
 	)
 	async swapFaces(
-		@UploadedFiles() files: { images?: Express.Multer.File[] }
+	@UploadedFiles() files: { images?: Express.Multer.File[] }
 	) {
-		return this.imageService.swapFaces(files.images[0], files.images[1])
+	if (!files || !files.images || files.images.length !== 2) {
+		throw new BadRequestException('Two images are required.');
+	}
+	
+	console.log(files.images[0]);
+	console.log(files.images[1]);
+	
+	return this.imageService.swapFaces(files.images);
 	}
 }

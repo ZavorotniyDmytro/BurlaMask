@@ -18,7 +18,7 @@ export class S3MicroserviceService {
 	}
 
 	async uploadFileToS3(file): Promise<string> {
-		file.buffer = Buffer.from(file.buffer.data)			
+		file.buffer = Buffer.from(file.buffer.data)		
 		const result = await this.s3
 		  .upload({
 			 Bucket: this.configService.get<string>('BUCKET_NAME'),

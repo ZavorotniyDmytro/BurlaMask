@@ -30,11 +30,7 @@ export class ImageController {
 	) {
 	if (!files || !files.images || files.images.length !== 2) {
 		throw new BadRequestException('Two images are required.');
-	}
-	
-	console.log(files.images[0]);
-	console.log(files.images[1]);
-	
+	}	
 	return this.imageService.swapFaces(files.images);
 	}
 }

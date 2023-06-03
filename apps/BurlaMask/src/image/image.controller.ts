@@ -14,34 +14,34 @@ export class ImageController {
 		return this.imageService.findByPartDescription(data)
 	}
 
-	// @Post('/upload')
-	// @UseInterceptors(FileInterceptor('file'))
-	// create(@UploadedFile() file: Express.Multer.File, @Body() createImageDto: ICreateImageDto): Promise<string>{
-	// 	console.log(file);
+	@Post('/upload')
+	@UseInterceptors(FileInterceptor('file'))
+	upload(@Body() createImageDto: ICreateImageDto): Promise<string>{
+		return this.imageService.update(createImageDto)
+	}
 
+	// @Post('/upload')
+	// create(@Body() createImageDto: ICreateImageDto): Promise<string>{
+	// 	console.log(createImageDto);
+		
+	// 	const parts = createImageDto.file.split(';base64,');
+	// 	const mimeType = parts[0].split(':')[1];
+	// 	const data = parts[1];
+	// 	const buffer = Buffer.from(data, 'base64');
+	//    const file: Express.Multer.File = {
+	// 		fieldname: 'fieldname',
+	// 		originalname: 'image1.jpg',
+	// 		encoding: '7bit',
+	// 		mimetype: mimeType,
+	// 		buffer: buffer,
+	// 		size: buffer.length,
+	// 		stream: new Readable,
+	// 		destination: '',
+	// 		filename: '',
+	// 		path: ''
+	// 	}
 	// 	return this.imageService.create(createImageDto, file)
 	// }
-
-	@Post('/upload')
-	create(@Body() createImageDto: ICreateImageDto): Promise<string>{
-		const parts = createImageDto.file.split(';base64,');
-		const mimeType = parts[0].split(':')[1];
-		const data = parts[1];
-		const buffer = Buffer.from(data, 'base64');
-	   const file: Express.Multer.File = {
-			fieldname: 'fieldname',
-			originalname: 'image1.jpg',
-			encoding: '7bit',
-			mimetype: mimeType,
-			buffer: buffer,
-			size: buffer.length,
-			stream: new Readable,
-			destination: '',
-			filename: '',
-			path: ''
-		}
-		return this.imageService.create(createImageDto, file)
-	}
 
 	@Post('/swap')
 	@UseInterceptors(

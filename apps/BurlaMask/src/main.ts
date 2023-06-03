@@ -5,6 +5,8 @@ import * as bodyParser from 'body-parser';
 import { AppModule } from './app.module';
 import { createProxyMiddleware } from 'http-proxy-middleware';
 import { spawn } from 'child_process';
+import path from 'path';
+import { cwd } from 'process';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule, { bodyParser: true });
@@ -35,7 +37,8 @@ async function bootstrap() {
   );
 
   // Запуск сервера Flask
-  const flaskProcess = spawn('python', ['D:\\univercity\\Mogyla\\BurlaMask\\apps\\BurlaMask\\src\\flask\\app.py']);
+  
+  const flaskProcess = spawn('py', ['D:\\Desktop\\study\\Nodejs projects\\BurlaMask\\apps\\BurlaMask\\src\\flask\\app.py']);
   flaskProcess.stdout.on('data', (data) => {
     console.log(`stdout: ${data}`);
   });

@@ -1,4 +1,4 @@
 interface ICreateImageDto {
-	file: string
+	id: string
 	description: string;
 }

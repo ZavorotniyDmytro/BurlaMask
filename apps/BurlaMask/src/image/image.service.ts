@@ -10,10 +10,12 @@ import { IDescriptionSearchBody } from '../search/types/descriptionSearchBody.in
 import { IDescription } from './dto/description.dto';
 import axios from 'axios';
 import * as FormData from 'form-data';
+import { Readable } from 'stream';
 
 
 export interface ISwappedFaces{
 	images: Express.Multer.File[];
+	imagesData: Image[]
 }
 
 
@@ -34,12 +36,11 @@ export class ImageService {
 	}
 
 	async create(
-		createImageDto: ICreateImageDto,
 		file: Express.Multer.File,
-	): Promise<string> {
+	): Promise<Image> {
 		const newRecord = {
 			image_url: '',
-			description: createImageDto.description,
+			description: '',
 		};
 		let image = this.imageRepository.create(newRecord);
 		image = await this.imageRepository.save(image);
@@ -51,9 +52,17 @@ export class ImageService {
 		);
 		image.image_url = await lastValueFrom(image_url$);
 
-		await this.searchService.indexImage(image);
 		image = await this.imageRepository.save(image);
-		return image.image_url;
+		return image;
+	}
+
+	async update(createImageDto: ICreateImageDto): Promise<string>{
+		const id = createImageDto.id
+		const image = await this.imageRepository.findOneBy({id: id})
+		image.description = createImageDto.description
+		await this.searchService.indexImage(image);
+		await this.imageRepository.save(image)
+		return image.image_url
 	}
 
 	async swapFaces(image1: Express.Multer.File, image2: Express.Multer.File): Promise<ISwappedFaces> {
@@ -66,11 +75,42 @@ export class ImageService {
 			const flaskResponse = await axios.post('http://localhost:5000/process_images', formData, {
 			  headers: formData.getHeaders(),
 			});
+			
+			let buffer = Buffer.from(flaskResponse.data.image1_with_ellipse, 'base64');
+			const file1: Express.Multer.File = {
+				fieldname: 'fieldname',
+				originalname: 'image1.jpg',
+				encoding: '7bit',
+				mimetype: 'image/jpeg',
+				buffer: buffer,
+				size: buffer.length,
+				stream: new Readable,
+				destination: '',
+				filename: '',
+				path: ''
+			}
 
-			// Повернення відповіді клієнту
-			return flaskResponse.data;
+
+			buffer = Buffer.from(flaskResponse.data.image2_with_ellipse, 'base64');
+			const file2: Express.Multer.File = {
+				fieldname: 'fieldname',
+				originalname: 'image2.jpg',
+				encoding: '7bit',
+				mimetype: 'image/jpeg',
+				buffer: buffer,
+				size: buffer.length,
+				stream: new Readable,
+				destination: '',
+				filename: '',
+				path: ''
+			}
+
+			const imageD1 = await this.create(file1)
+			const imageD2 = await this.create(file2)
+			const obj: ISwappedFaces ={ images: [file1, file2], imagesData: [imageD1, imageD2]}
+			
+			return obj;
 		  } catch (error) {
-			// Обробка помилки
 			console.error(error);
 		  }
 		}

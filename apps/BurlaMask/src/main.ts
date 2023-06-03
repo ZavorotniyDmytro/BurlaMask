@@ -38,7 +38,9 @@ async function bootstrap() {
 
   // Запуск сервера Flask
   
-  const flaskProcess = spawn('py', ['D:\\Desktop\\study\\Nodejs projects\\BurlaMask\\apps\\BurlaMask\\src\\flask\\app.py']);
+  const flaskProcess = spawn('py', [
+	'D:\\Desktop\\study\\Nodejs projects\\BurlaMask\\apps\\BurlaMask\\src\\flask\\app.py'
+	]);
   flaskProcess.stdout.on('data', (data) => {
     console.log(`stdout: ${data}`);
   });
